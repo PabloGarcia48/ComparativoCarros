@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tabela de Carros Elétricos</title>
+    <style>
+      :root {
+        --ink: #162024;
+        --muted: #5f6b70;
+        --paper: #f4f6f3;
+        --panel: #ffffff;
+        --line: #dde5e2;
+        --soft: #eef5f1;
+        --green: #12745c;
+        --shadow: 0 12px 32px rgba(26, 38, 39, 0.09);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--paper);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+
+      .hero {
+        background:
+          linear-gradient(180deg, rgba(14, 26, 25, 0.72), rgba(14, 26, 25, 0.94)),
+          url("assets/mg4.png") center 28px / min(86vw, 360px) auto no-repeat,
+          #172321;
+        color: #fff;
+      }
+
+      .hero-inner,
+      main {
+        width: min(1120px, calc(100% - 24px));
+        margin: 0 auto;
+      }
+
+      .hero-inner {
+        padding: 178px 0 24px;
+      }
+
+      .eyebrow {
+        margin: 0 0 10px;
+        color: #bee7d8;
+        font-size: 0.74rem;
+        font-weight: 850;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 760px;
+        margin: 0;
+        font-size: clamp(2rem, 11vw, 4.4rem);
+        line-height: 1;
+        letter-spacing: 0;
+      }
+
+      .hero-copy {
+        max-width: 640px;
+        margin: 12px 0 0;
+        color: #dce8e3;
+        font-size: 1rem;
+        line-height: 1.5;
+      }
+
+      main {
+        padding: 16px 0 44px;
+      }
+
+      .toolbar {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+
+      .search,
+      .select,
+      .brand-filter {
+        min-height: 44px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: 0 8px 20px rgba(26, 38, 39, 0.05);
+      }
+
+      .search,
+      .select {
+        width: 100%;
+        padding: 0 12px;
+        color: var(--ink);
+      }
+
+      .brand-filter {
+        display: flex;
+        gap: 4px;
+        overflow-x: auto;
+        padding: 4px;
+      }
+
+      .tab {
+        min-width: 72px;
+        min-height: 34px;
+        padding: 0 12px;
+        color: var(--muted);
+        background: transparent;
+        border: 0;
+        border-radius: 6px;
+        font-weight: 750;
+        white-space: nowrap;
+        cursor: pointer;
+      }
+
+      .tab.active {
+        color: #fff;
+        background: var(--ink);
+      }
+
+      .table-wrap {
+        max-height: 76vh;
+        overflow: auto;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+      }
+
+      table {
+        width: 100%;
+        min-width: 760px;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 11px 12px;
+        text-align: left;
+        border-bottom: 1px solid var(--line);
+        white-space: nowrap;
+        vertical-align: middle;
+      }
+
+      th {
+        position: sticky;
+        top: 0;
+        z-index: 3;
+        color: var(--muted);
+        background: #f9fbfa;
+        font-size: 0.72rem;
+        font-weight: 850;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      tbody tr:nth-child(even) td {
+        background: #fbfcfb;
+      }
+
+      tbody tr:hover td {
+        background: #f0f7f3;
+      }
+
+      .sticky-col {
+        position: sticky;
+        left: 0;
+        z-index: 2;
+        width: 216px;
+        min-width: 216px;
+        max-width: 216px;
+        background: var(--panel);
+        box-shadow: 1px 0 0 var(--line);
+      }
+
+      th.sticky-col {
+        z-index: 4;
+      }
+
+      .model-cell {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .car-thumb {
+        width: 62px;
+        height: 40px;
+        flex: 0 0 62px;
+        object-fit: contain;
+        background: var(--soft);
+        border: 1px solid #e2eae6;
+        border-radius: 8px;
+        filter: drop-shadow(0 6px 6px rgba(24, 34, 36, 0.1));
+      }
+
+      .model-name {
+        display: block;
+        max-width: 122px;
+        overflow: hidden;
+        font-weight: 850;
+        line-height: 1.2;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .number {
+        font-weight: 820;
+      }
+
+      .empty {
+        display: none;
+        margin-bottom: 12px;
+        padding: 22px;
+        color: var(--muted);
+        text-align: center;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+      }
+
+      .note {
+        margin: 10px 0 0;
+        color: var(--muted);
+        font-size: 0.82rem;
+        line-height: 1.45;
+      }
+
+      @media (min-width: 720px) {
+        .hero {
+          background:
+            linear-gradient(90deg, rgba(14, 26, 25, 0.9), rgba(14, 26, 25, 0.42) 55%, rgba(14, 26, 25, 0.18)),
+            url("assets/mg4.png") center right / min(46vw, 560px) auto no-repeat,
+            #172321;
+        }
+
+        .hero-inner {
+          padding: 58px 0 38px;
+        }
+
+        .hero-copy {
+          font-size: 1.12rem;
+        }
+
+        main {
+          padding-top: 24px;
+        }
+
+        .toolbar {
+          grid-template-columns: 1fr minmax(250px, auto) 220px;
+          gap: 12px;
+          align-items: center;
+        }
+
+        th,
+        td {
+          padding: 13px 16px;
+        }
+
+        .sticky-col {
+          width: 300px;
+          min-width: 300px;
+          max-width: 300px;
+        }
+
+        .car-thumb {
+          width: 86px;
+          height: 52px;
+          flex-basis: 86px;
+        }
+
+        .model-name {
+          max-width: 180px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <section class="hero">
+        <div class="hero-inner">
+          <p class="eyebrow">Tabela de carros elétricos</p>
+          <h1>Comparativo de modelos elétricos</h1>
+          <p class="hero-copy">
+            Visualização mobile first dos dados da planilha, mantendo apenas os campos originais.
+          </p>
+        </div>
+      </section>
+
+      <main>
+        <div class="toolbar">
+          <input class="search" id="search" type="search" placeholder="Buscar modelo ou marca" />
+          <div class="brand-filter" id="brandFilter" aria-label="Filtro de marca"></div>
+          <select class="select" id="sort">
+            <option value="price-asc">Menor preço</option>
+            <option value="range-desc">Maior autonomia</option>
+            <option value="power-desc">Maior potência</option>
+            <option value="accel-asc">Mais rápido 0-100</option>
+            <option value="model-asc">Modelo A-Z</option>
+          </select>
+        </div>
+
+        <div class="empty" id="empty">Nenhum modelo encontrado.</div>
+
+        <section class="table-wrap" aria-label="Tabela de carros elétricos">
+          <table>
+            <thead>
+              <tr>
+                <th>Marca</th>
+                <th class="sticky-col">Modelo</th>
+                <th>Preço</th>
+                <th>Autonomia</th>
+                <th>Potência</th>
+                <th>0-100 km/h</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </section>
+        <p class="note">A tabela pode ser rolada para os lados no celular.</p>
+      </main>
+    </div>
+
+    <script>
+      const cars = [
+        { brand: "GAC", model: "AION V", price: 219990, range: 389, power: 204, accel: 7.9, image: "assets/aion-v.jpeg" },
+        { brand: "GAC", model: "AION Y Premium", price: 175990, range: 318, power: 204, accel: 8.5, image: "assets/aion-y.png" },
+        { brand: "GAC", model: "AION Y Elite", price: 187990, range: 318, power: 204, accel: 8.5, image: "assets/aion-y.png" },
+        { brand: "GAC", model: "AION UT Premium", price: 139990, range: 253, power: 204, accel: 8.6, image: "assets/aion-ut.png" },
+        { brand: "GAC", model: "AION UT Elite", price: 159990, range: 310, power: 204, accel: 7.3, image: "assets/aion-ut.png" },
+        { brand: "MG", model: "MG4 Confort", price: 169600, range: 364, power: 190, accel: 7.2, image: "assets/mg4.png" },
+        { brand: "MG", model: "MG4 Luxury", price: 189800, range: 364, power: 190, accel: 7.2, image: "assets/mg4.png" },
+        { brand: "MG", model: "MG4 X-Power", price: 229800, range: 279, power: 435, accel: 3.8, image: "assets/mg4.png" },
+        { brand: "MG", model: "MG4 Urban Confort", price: 129990, range: 299, power: 150, accel: 9.6, image: "assets/mg4-urban.png" },
+        { brand: "MG", model: "MG4 Urban Luxury", price: 139990, range: 299, power: 150, accel: 9.6, image: "assets/mg4-urban.png" },
+        { brand: "MG", model: "MG4 Urban Luxury 54Kw", price: 149990, range: 358, power: 160, accel: 9.5, image: "assets/mg4-urban.png" },
+        { brand: "MG", model: "MG S5 Confort", price: 189800, range: 351, power: 205, accel: 6.3, image: "assets/mg-s5.png" },
+        { brand: "MG", model: "MG S5 Luxury", price: 219800, range: 351, power: 205, accel: 6.3, image: "assets/mg-s5.png" },
+      ];
+
+      const formatPrice = new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+        maximumFractionDigits: 0,
+      });
+
+      const state = {
+        brand: "Todos",
+        query: "",
+        sort: "price-asc",
+      };
+
+      function normalize(value) {
+        return value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      }
+
+      function visibleCars() {
+        const q = normalize(state.query.trim());
+        return cars
+          .filter((car) => state.brand === "Todos" || car.brand === state.brand)
+          .filter((car) => !q || normalize(`${car.brand} ${car.model}`).includes(q))
+          .sort((a, b) => {
+            if (state.sort === "price-asc") return a.price - b.price;
+            if (state.sort === "range-desc") return b.range - a.range;
+            if (state.sort === "power-desc") return b.power - a.power;
+            if (state.sort === "accel-asc") return a.accel - b.accel;
+            return a.model.localeCompare(b.model, "pt-BR");
+          });
+      }
+
+      function renderBrandFilter() {
+        const brands = ["Todos", ...new Set(cars.map((car) => car.brand))].sort((a, b) => {
+          if (a === "Todos") return -1;
+          if (b === "Todos") return 1;
+          return a.localeCompare(b, "pt-BR");
+        });
+
+        document.querySelector("#brandFilter").innerHTML = brands
+          .map((brand) => `<button class="tab ${brand === state.brand ? "active" : ""}" type="button" data-brand="${brand}">${brand}</button>`)
+          .join("");
+
+        document.querySelectorAll(".tab").forEach((button) => {
+          button.addEventListener("click", () => {
+            state.brand = button.dataset.brand;
+            renderBrandFilter();
+            render();
+          });
+        });
+      }
+
+      function render() {
+        const list = visibleCars();
+        document.querySelector("#empty").style.display = list.length ? "none" : "block";
+
+        document.querySelector("#tableBody").innerHTML = list
+          .map(
+            (car) => `
+              <tr>
+                <td>${car.brand}</td>
+                <td class="sticky-col">
+                  <div class="model-cell">
+                    <img class="car-thumb" src="${car.image}" alt="${car.model}" />
+                    <span class="model-name" title="${car.model}">${car.model}</span>
+                  </div>
+                </td>
+                <td class="number">${formatPrice.format(car.price)}</td>
+                <td class="number">${car.range} km</td>
+                <td class="number">${car.power} cv</td>
+                <td class="number">${car.accel.toFixed(1)} s</td>
+              </tr>
+            `,
+          )
+          .join("");
+      }
+
+      document.querySelector("#search").addEventListener("input", (event) => {
+        state.query = event.target.value;
+        render();
+      });
+
+      document.querySelector("#sort").addEventListener("change", (event) => {
+        state.sort = event.target.value;
+        render();
+      });
+
+      renderBrandFilter();
+      render();
+    </script>
+  </body>
+</html>
