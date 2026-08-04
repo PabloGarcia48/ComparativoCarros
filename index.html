@@ -38,7 +38,7 @@
       .hero {
         background:
           linear-gradient(180deg, rgba(14, 26, 25, 0.72), rgba(14, 26, 25, 0.94)),
-          url("assets/mg4.png") center 28px / min(86vw, 360px) auto no-repeat,
+          url("assets/image4.png") right 8px top 8px / min(34vw, 132px) auto no-repeat,
           #172321;
         color: #fff;
       }
@@ -50,11 +50,11 @@
       }
 
       .hero-inner {
-        padding: 178px 0 24px;
+        padding: 18px 122px 16px 0;
       }
 
       .eyebrow {
-        margin: 0 0 10px;
+        margin: 0 0 6px;
         color: #bee7d8;
         font-size: 0.74rem;
         font-weight: 850;
@@ -65,17 +65,9 @@
       h1 {
         max-width: 760px;
         margin: 0;
-        font-size: clamp(2rem, 11vw, 4.4rem);
+        font-size: clamp(1.35rem, 6.8vw, 4.4rem);
         line-height: 1;
         letter-spacing: 0;
-      }
-
-      .hero-copy {
-        max-width: 640px;
-        margin: 12px 0 0;
-        color: #dce8e3;
-        font-size: 1rem;
-        line-height: 1.5;
       }
 
       main {
@@ -243,16 +235,12 @@
         .hero {
           background:
             linear-gradient(90deg, rgba(14, 26, 25, 0.9), rgba(14, 26, 25, 0.42) 55%, rgba(14, 26, 25, 0.18)),
-            url("assets/mg4.png") center right / min(46vw, 560px) auto no-repeat,
+            url("assets/image4.png") center right / min(46vw, 560px) auto no-repeat,
             #172321;
         }
 
         .hero-inner {
-          padding: 58px 0 38px;
-        }
-
-        .hero-copy {
-          font-size: 1.12rem;
+          padding: 42px 0 26px;
         }
 
         main {
@@ -260,7 +248,7 @@
         }
 
         .toolbar {
-          grid-template-columns: 1fr minmax(250px, auto) 220px;
+          grid-template-columns: 1fr minmax(250px, auto) 190px 220px;
           gap: 12px;
           align-items: center;
         }
@@ -294,9 +282,6 @@
         <div class="hero-inner">
           <p class="eyebrow">Tabela de carros elétricos</p>
           <h1>Comparativo de modelos elétricos</h1>
-          <p class="hero-copy">
-            Visualização mobile first dos dados da planilha, mantendo apenas os campos originais.
-          </p>
         </div>
       </section>
 
@@ -304,6 +289,7 @@
         <div class="toolbar">
           <input class="search" id="search" type="search" placeholder="Buscar modelo ou marca" />
           <div class="brand-filter" id="brandFilter" aria-label="Filtro de marca"></div>
+          <select class="select" id="maxPrice" aria-label="Preço máximo"></select>
           <select class="select" id="sort">
             <option value="price-asc">Menor preço</option>
             <option value="range-desc">Maior autonomia</option>
@@ -336,19 +322,27 @@
 
     <script>
       const cars = [
-        { brand: "GAC", model: "AION V", price: 219990, range: 389, power: 204, accel: 7.9, image: "assets/aion-v.jpeg" },
-        { brand: "GAC", model: "AION Y Premium", price: 175990, range: 318, power: 204, accel: 8.5, image: "assets/aion-y.png" },
-        { brand: "GAC", model: "AION Y Elite", price: 187990, range: 318, power: 204, accel: 8.5, image: "assets/aion-y.png" },
-        { brand: "GAC", model: "AION UT Premium", price: 139990, range: 253, power: 204, accel: 8.6, image: "assets/aion-ut.png" },
-        { brand: "GAC", model: "AION UT Elite", price: 159990, range: 310, power: 204, accel: 7.3, image: "assets/aion-ut.png" },
-        { brand: "MG", model: "MG4 Confort", price: 169600, range: 364, power: 190, accel: 7.2, image: "assets/mg4.png" },
-        { brand: "MG", model: "MG4 Luxury", price: 189800, range: 364, power: 190, accel: 7.2, image: "assets/mg4.png" },
-        { brand: "MG", model: "MG4 X-Power", price: 229800, range: 279, power: 435, accel: 3.8, image: "assets/mg4.png" },
-        { brand: "MG", model: "MG4 Urban Confort", price: 129990, range: 299, power: 150, accel: 9.6, image: "assets/mg4-urban.png" },
-        { brand: "MG", model: "MG4 Urban Luxury", price: 139990, range: 299, power: 150, accel: 9.6, image: "assets/mg4-urban.png" },
-        { brand: "MG", model: "MG4 Urban Luxury 54Kw", price: 149990, range: 358, power: 160, accel: 9.5, image: "assets/mg4-urban.png" },
-        { brand: "MG", model: "MG S5 Confort", price: 189800, range: 351, power: 205, accel: 6.3, image: "assets/mg-s5.png" },
-        { brand: "MG", model: "MG S5 Luxury", price: 219800, range: 351, power: 205, accel: 6.3, image: "assets/mg-s5.png" },
+        { brand: "GAC", model: "AION V", price: 219990, range: 389, power: 204, accel: 7.9, image: "assets/image1.jpeg" },
+        { brand: "GAC", model: "AION Y Premium", price: 175990, range: 318, power: 204, accel: 8.5, image: "assets/image3.png" },
+        { brand: "GAC", model: "AION Y Elite", price: 187990, range: 318, power: 204, accel: 8.5, image: "assets/image3.png" },
+        { brand: "GAC", model: "AION UT Premium", price: 139990, range: 253, power: 204, accel: 8.6, image: "assets/image2.png" },
+        { brand: "GAC", model: "AION UT Elite", price: 159990, range: 310, power: 204, accel: 7.3, image: "assets/image2.png" },
+        { brand: "MG", model: "MG4 Confort", price: 169600, range: 364, power: 190, accel: 7.2, image: "assets/image4.png" },
+        { brand: "MG", model: "MG4 Luxury", price: 189800, range: 364, power: 190, accel: 7.2, image: "assets/image4.png" },
+        { brand: "MG", model: "MG4 Urban Confort", price: 129990, range: 299, power: 150, accel: 9.6, image: "assets/image5.png" },
+        { brand: "MG", model: "MG4 Urban Luxury", price: 139990, range: 299, power: 150, accel: 9.6, image: "assets/image5.png" },
+        { brand: "MG", model: "MG4 Urban Luxury 54Kw", price: 149990, range: 358, power: 160, accel: 9.5, image: "assets/image5.png" },
+        { brand: "MG", model: "MG S5 Confort", price: 189800, range: 351, power: 205, accel: 6.3, image: "assets/image6.png" },
+        { brand: "MG", model: "MG S5 Luxury", price: 219800, range: 351, power: 205, accel: 6.3, image: "assets/image6.png" },
+        { brand: "BYD", model: "YUAN PLUS", price: 235990, range: 378, power: 449, accel: 3.9, image: "assets/image7.png" },
+        { brand: "BYD", model: "DOLPHIN MINI", price: 119990, range: 280, power: 75, accel: 14.9, image: "assets/image8.png" },
+        { brand: "BYD", model: "YUAN PRO", price: 182990, range: 250, power: 177, accel: 7.9, image: "assets/image7.png" },
+        { brand: "BYD", model: "DOLPHIN", price: 182990, range: 291, power: 95, accel: 10.9, image: "assets/image9.png" },
+        { brand: "Chevrolet", model: "SPARK", price: 156660, range: 291, power: 95, accel: 10.9, image: "assets/image10.png" },
+        { brand: "Geely", model: "EX2 PRO", price: 123800, range: 289, power: 116, accel: 10.2, image: "assets/image11.png" },
+        { brand: "Geely", model: "EX2 MAX", price: 136800, range: 289, power: 116, accel: 10.2, image: "assets/image11.png" },
+        { brand: "Geely", model: "EX5 PRO", price: 205800, range: 413, power: 218, accel: 6.9, image: "assets/image12.png" },
+        { brand: "Geely", model: "EX5 MAX", price: 225800, range: 349, power: 218, accel: 7.1, image: "assets/image12.png" },
       ];
 
       const formatPrice = new Intl.NumberFormat("pt-BR", {
@@ -360,6 +354,7 @@
       const state = {
         brand: "Todos",
         query: "",
+        maxPrice: "",
         sort: "price-asc",
       };
 
@@ -369,9 +364,12 @@
 
       function visibleCars() {
         const q = normalize(state.query.trim());
+        const maxPrice = state.maxPrice === "" ? Infinity : Number(state.maxPrice);
+
         return cars
           .filter((car) => state.brand === "Todos" || car.brand === state.brand)
           .filter((car) => !q || normalize(`${car.brand} ${car.model}`).includes(q))
+          .filter((car) => car.price <= maxPrice)
           .sort((a, b) => {
             if (state.sort === "price-asc") return a.price - b.price;
             if (state.sort === "range-desc") return b.range - a.range;
@@ -399,6 +397,19 @@
             render();
           });
         });
+      }
+
+      function renderPriceFilter() {
+        const select = document.querySelector("#maxPrice");
+        const highestPrice = Math.max(...cars.map((car) => car.price));
+        const highestStep = Math.ceil(highestPrice / 10000) * 10000;
+        const options = ['<option value="">Preço máximo</option>'];
+
+        for (let price = 100000; price <= highestStep; price += 10000) {
+          options.push(`<option value="${price}">Até ${formatPrice.format(price)}</option>`);
+        }
+
+        select.innerHTML = options.join("");
       }
 
       function render() {
@@ -436,7 +447,13 @@
         render();
       });
 
+      document.querySelector("#maxPrice").addEventListener("change", (event) => {
+        state.maxPrice = event.target.value;
+        render();
+      });
+
       renderBrandFilter();
+      renderPriceFilter();
       render();
     </script>
   </body>
